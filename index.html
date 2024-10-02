@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Benchmarking Semantic Sensitive Information in LLMs Outputs</title>
+    <title>A Benchmark for Semantic Sensitive Information in LLMs' Outputs</title>
 
     <!-- CSS -->
     <link rel="stylesheet" href="third_party/slick.css">
@@ -363,7 +363,125 @@
             background-color: #f1f1f1;
         }
 
+        /* 确保所有表头单元格水平和垂直居中 */
+        table.dataTable thead th {
+            text-align: center;
+            vertical-align: middle;
+        }
 
+
+        /* 确保所有数据单元格水平和垂直居中 */
+        table.dataTable td {
+            text-align: center;
+            vertical-align: middle;
+        }
+        /* 确保表格使用折叠边框，避免双重边框 */
+        table.dataTable {
+            border-collapse: collapse;
+        }
+
+        /* 为各区域的最后一列的数据单元格添加右边框 */
+        table.dataTable tbody td:nth-child(1),
+        table.dataTable tbody td:nth-child(5),
+        table.dataTable tbody td:nth-child(9) {
+            border-right: 1px solid black;
+        }
+        /* 为需要的单元格添加右边框 */
+        .border-right {
+            border-right: 1px solid black;
+        }
+
+
+        /* New styles for the boxed definition and code-like text */
+        .boxed {
+            border: 1px solid black;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .code {
+            font-family: monospace;
+            background-color: #f2f2f2;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        /* Adjustments for the taxonomy panels */
+        .panel-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .panel-title a {
+            flex-grow: 1;
+        }
+
+        .triangle-btn {
+            background-color: transparent;
+            border: none;
+            padding: 0;
+            margin-left: 5px;
+        }
+
+        .arrow-down {
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 5px solid #000000;
+        }
+
+        
+        h3 {
+            font-weight: bold;
+            margin-top: 40px;
+        }
+
+        h4 {
+            font-size: 1.25em;
+            font-weight: bold;
+            margin-top: 30px;
+        }
+
+        .section-number {
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        .metrics-list {
+            margin-top: 15px;
+        }
+
+        .metrics-list li {
+            margin-bottom: 10px;
+        }
+
+        .table-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-top: 25px;
+            margin-bottom: 10px;
+        }
+
+        .bold-text {
+            font-weight: bold;
+        }
+
+        .taxonomy-intro {
+            margin-bottom: 15px;
+            /* 移除了斜体样式 */
+        }
+
+        .metrics-intro {
+            font-weight: bold;
+        }
+
+        .metrics-list {
+            margin-top: 15px;
+            list-style-type: disc;
+            padding-left: 20px; /* 添加左侧内边距以显示项目符号 */
+        }
     </style>
 
 
@@ -390,7 +508,7 @@
         <ul class="nav navbar-nav">
             <li><a href="./index.html#abstract" style="color: white; font-weight: 500">Abstract</a></li>
             <li><a href="./index.html#SemSI" style="color: white; font-weight: 500">Semantic Sensitive Information</a></li>
-            <li><a href="./index.html#leaderboard" style="color: white; font-weight: 500">Leaderboard </a></li>
+            <li><a href="./index.html#leaderboard" style="color: white; font-weight: 500">Benchmark Results </a></li>
             <li><a href="./index.html#findings" style="color: white; font-weight: 500">Findings</a></li>
         </ul>
     </div>
@@ -403,7 +521,7 @@
             <img src="resources/icon2.webp" alt="Logo"
                  style="max-height: 100px; margin-right: 2px;">
             <h2 id="title" style="margin-bottom: 0;">
-                Benchmarking Semantic Sensitive Information in LLMs Outputs
+                A Benchmark for Semantic Sensitive Information in LLM's Outputs
             </h2>
         </div>
     </div>
@@ -442,7 +560,7 @@
     <div class="row">
         <div class="col-sm-10 col-sm-offset-1 text-center">
             <ul class="list-inline">
-                <li> This is our anonymous submission to EMNLP 2024. We provide here the leaderboard we construct for evaluating semantic sensitive information risk of popular LLMs.</a> </li>
+                <li> This is our anonymous submission to ICLR 2025. We provide here the leaderboard we construct for evaluating semantic sensitive information risk of popular LLMs.</a> </li>
             </ul>
         </div>
     </div>
@@ -454,10 +572,10 @@
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <h3 id="abstract">
-                Abstract
+                <span class="section-number">1.</span>Abstract
             </h3>
             <center>
-                <img src="./resources/scope_00.jpg" class="img-responsive" alt="overview"
+                <img src="./resources/overview1.png" class="img-responsive" alt="overview"
                     width="50%" style="margin:auto;padding-top: 1em">
                 <!-- <p style="color: white; font-size: 24px;">
                     <span style="background-color: red;">
@@ -467,409 +585,398 @@
                 <figcaption>
                     <p class="text-justify; text-align: center;">
                         <span style="font-weight: bold; font-size: larger">Figure 1. </span>
-                        Sensitive information: from structured form to semantic form.
+                        Structured sensitive information and semantic sensitive information induced by simple natural questions.
                     </p>
                 </figcaption>
             </center>
             <div class="text-justify">
-                Large language models (LLMs) have become a main source to output sensitive information which is harmful in various domains. 
-                Existing research mainly focuses on structured sensitive information (e.g. personal identifiable information) while we observe a more threatening trend that more and more semantic sensitive information is generated by current LLMs with severe consequences. 
-                Nevertheless, little attention is paid to it in the research community. 
-                Therefore, we propose a novel and large-scale investigation on semantic sensitive information (SemSI) for state-of-the-art LLMs. 
-                Particularly, we first propose a formal definition of SemSI and construct a dataset, SemSI-Set, with prompts and labels of SemSI. Then, we propose a large-scale benchmark, SemSI-Ben, to systematically evaluate LLMs and form a leaderboard, SemSI-Board, for understanding the SemSI in current LLMs’ outputs. 
-                Finally, thorough evaluation and analysis are conducted to reveal characteristics of SemSI and give inspiration for possible mitigation solutions.
+                Large language models (LLMs) can output sensitive information for simple natural questions which becomes a novel safety concern.
+                Previous works focus on structured sensitive information (e.g. personal identifiable information).
+                However, we notice that sensitive information in LLMs' outputs can also be at the semantic level with no structures, i.e.
+                semantic sensitive information (<span class="code">SemSI</span>). Particularly, simple natural questions can let state-of-the-art (SOTA) LLMs to output <span class="code">SemSI</span> with severe consequences.
+                Compared with previous work of structured sensitive information in LLM's outputs, <span class="code">SemSI</span> are hard to define and are rarely studied.
+                Therefore, we propose a novel and large-scale investigation on <span class="code">SemSI</span> for SOTA LLMs.
+                First, we construct a comprehensive and labelled dataset of semantic sensitive information, <span class="code">SemSI-Set</span>, by including three typical categories of <span class="code">SemSI</span>.
+                Then, we propose a large-scale benchmark, <span class="code">SemSI-Bench</span>, to systematically evaluate semantic sensitive information in outputs of 25 SOTA LLMs.
+                Our finding reveals that <span class="code">SemSI</span> are widely existed in SOTA LLMs' outputs by querying with simple natural questions. We anonymously open-source our work.
             </div>
         </div>
     </div>
 
+    <!-- Section 2: Semantic Sensitive Information (SemSI) -->
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <h3 id="SemSI">
-                Semantic sensitive information (SemSI)
+                <span class="section-number">2.</span>Semantic Sensitive Information (<span class="code">SemSI</span>)
             </h3>
             <div class="text-justify">
-                Definition: <b><i>It consists of at least a subject and a predicate and expresses a viewpoint or a statement that has a risk of harm towards the subject.</i></b><br><br>
-                Taxonomy: <br>
-                <ul>
-                    <li>1. Privacy-related (p)</li>
-                    <li>2. Reputation-harmful (r)</li>
-                    <li>3. Misinformation (m)</li>
-                </ul>                  
+                <div class="boxed">
+                    <b>Definition: It consists of at least a subject and a predicate and expresses a viewpoint or a statement that has a risk of harm towards the subject.</b>
+                </div>
+                <b>Taxonomy:</b>
+                <p class="taxonomy-intro">
+                    We classify <span class="code">SemSI</span> into three categories:
+                </p>
+                <div class="panel-group" id="taxonomy-accordion">
+                    <!-- Taxonomy Item 1 -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#taxonomy-accordion" href="#taxonomy1">
+                                    1. Sensitive Identity Attributes (S)
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="taxonomy1" class="panel-collapse collapse">
+                            <div class="panel-body" style="font-size: 16px;">
+                                Privacy-related information is widely studied in previous research and is one of the most important issues in modern digital society. However, privacy can be broad and might refer to a wide range of identity-related information, including structured ones like names or phone numbers and semantic ones like religious or philosophical beliefs, political opinions, racial or ethnic identification, etc. Thus, here we define those non-structured personal privacy-related sensitive information as the first category of <span class="code">SemSI</span> and name it as sensitive identity attributes. Besides, regardless of whether sensitive identity attributes may have a negative impact on the subjects, it is important for LLM developers to pay attention to them since each individual has the "Right To Be Forgotten" online.
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Taxonomy Item 2 -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#taxonomy-accordion" href="#taxonomy2">
+                                    2. Reputation-Harmful Contents (R)
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="taxonomy2" class="panel-collapse collapse">
+                            <div class="panel-body" style="font-size: 16px;">
+                                In complement to the attributes-related <span class="code">SemSI</span> representing attributes of the subject, we find another type, reputation-harmful contents, that directly harms individuals. Reputation is a critical asset for individuals and organizations, significantly influencing social and economic interactions. Reputation damage can lead to loss of opportunities or profit, social ostracism, and mental health issues. Legal frameworks such as defamation laws and insult laws aim to protect against such harm. Many prosecution cases exemplify recourse for reputation damage (e.g., JK Rowling sued the Daily Mail for libel about her experiences as a single mother). We aim to raise LLM developers' awareness of the existence of reputation-harmful <span class="code">SemSI</span> in LLMs' outputs.
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Taxonomy Item 3 -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#taxonomy-accordion" href="#taxonomy3">
+                                    3. Incorrect Hazardous Information (I)
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="taxonomy3" class="panel-collapse collapse">
+                            <div class="panel-body" style="font-size: 16px;">
+                                Besides individuals, these semantic sensitive information may also affect public safety and trust. For instance, those incorrect but hazardous information can result in public confusion, panic, and poorly informed decision-making. For example, the information suggesting that disinfectants could cure COVID-19 has led to widespread confusion. Therefore, we list the incorrect hazardous information as the third category of <span class="code">SemSI</span>.
+                            </div>
+                        </div>
+                    </div>
+                </div>             
             </div>    
         </div>
     </div>
 
-
-    <!--    <div class="row">-->
-    <!--        <div class="col-sm-10 col-sm-offset-1 text-center">-->
-    <!--            <video controls muted loop autoplay>-->
-    <!--                <source src="third_party/demo.mp4" type="video/mp4"/>-->
-    <!--            </video>-->
-    <!--        </div>-->
-    <!--    </div>-->
-
-    <!--    <div class="row">-->
-    <!--        <div class="col-md-10 col-md-offset-1">-->
-
-    <!--        </div>-->
-    <!--    </div>-->
+    <!-- Section 3: SemSI-Bench Results -->
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <h3 id="leaderboard">
-                Leaderboard, SemSI-Board
+                <span class="section-number">3.</span>SemSI-Bench Results
             </h3>
             <div class="text-justify">
-                Below we provide the leaderboard, SemSI-Board, for our 22 LLMs evaluated.                 
-                It is recommended to sort in any metric (<b>click on the small triangles on the header</b>) for overall or category perception of SemSI risk. Lower metric means lower risk.<br><br>
-                We give a brief description to the metrics below: <br><br>
-                1. Occurence rate (OR): the percentage of SemSI occurence on the whole dataset.<br><br>
-                2. Toxicity score (TS): the severity or the toxicity of generated SemSI.<br><br>
-                3. Coverage (CR): the proportion of SemSI in the LLMs answers.<br><br>
-                Each metric has 4 variants: o- for overall, p- for privacy-related SemSI, r- for reputation-harmful SemSI, and m- for misinformation SemSI.<br><br>                
+                Below we provide the results of <span class="code">SemSI-Bench</span> for our 25 evaluated LLMs. We recommend sorting the tables by any metric (<b>click on the small triangles on the header</b>) to better perceive the <span class="code">SemSI</span> risk, either overall or by category. Lower metric values indicate lower risk.
+
+                <p class="metrics-intro">We give a brief description of the metrics below:</p>
+                <ul class="metrics-list">
+                    <li><b>Occurrence rate</b>: The percentage of <span class="code">SemSI</span> occurrences in the whole dataset.</li>
+                    <li><b>Toxicity score</b>: The severity or toxicity of the generated <span class="code">SemSI</span>.</li>
+                    <li><b>Coverage</b>: The proportion of <span class="code">SemSI</span> in the LLMs' answers.</li>
+                </ul>
+                <p class="metrics-intro">Each metric has four variants:</p>
+                <ul class="metrics-list">
+                    <li><span class="code"><b>o-</b>SemSI</span> for overall</li>
+                    <li><span class="code"><b>S-</b>SemSI</span>  for Sensitive Identity Attributes of <span class="code">SemSI</span></li>
+                    <li><span class="code"><b>R-</b>SemSI</span>  for Reputation-Harmful Contents of <span class="code">SemSI</span></li>
+                    <li><span class="code"><b>I-</b>SemSI</span>  for Incorrect Hazardous Information of <span class="code">SemSI</span></li>
+                </ul>                
             </div>
-            <table id="leaderboard_content" class="display">
+            <h4 class="table-title">Table 1: Open-source Models</h4>
+            <table id="open_source_table" class="display">
                 <thead>
-                <tr>
-                    <th>Model</th>
-                    <th>o-OR(%)</th>
-                    <th>o-TS</th>
-                    <th>o-CR(%)</th>
-                    <th>p-OR(%)</th>
-                    <th>r-OR(%)</th>
-                    <th>m-OR(%)</th>
-                    <th>p-TS</th>
-                    <th>r-TS</th>
-                    <th>m-TS</th>
-                    <th>p-CR(%)</th>
-                    <th>r-CR(%)</th>
-                    <th>m-CR(%)</th>
-                </tr>
+                    <tr>
+                        <th rowspan="2" class="border-right">Model</th>
+                        <th colspan="4" class="border-right">Occurrence rate (%)</th>
+                        <th colspan="4" class="border-right">Toxicity score</th>
+                        <th colspan="4">Coverage (%)</th>
+                    </tr>
+                    <tr>
+                        <th>o-</th>
+                        <th>S-</th>
+                        <th>R-</th>
+                        <th class="border-right">I-</th>
+                        <th>o-</th>
+                        <th>S-</th>
+                        <th>R-</th>
+                        <th class="border-right">I-</th>
+                        <th>o-</th>
+                        <th>S-</th>
+                        <th>R-</th>
+                        <th>I-</th>
+                    </tr>
                 </thead>
+                <div>
+                </div>
                 <tbody>
-                <!-- 表格数据放在这里 -->
+                <!-- 表格数据从 script 标签中获取 -->
+                </tbody>
+            </table>
+            <h4 class="table-title">Table 2: Closed-source Models</h4>
+            <table id="closed_source_table" class="display">
+                <thead>
+                    <tr>
+                        <th rowspan="2" class="border-right">Model</th>
+                        <th colspan="4" class="border-right">Occurrence rate (%)</th>
+                        <th colspan="4" class="border-right">Toxicity score</th>
+                        <th colspan="4">Coverage (%)</th>
+                    </tr>
+                    <tr>
+                        <th>o-</th>
+                        <th>S-</th>
+                        <th>R-</th>
+                        <th class="border-right">I-</th>
+                        <th>o-</th>
+                        <th>S-</th>
+                        <th>R-</th>
+                        <th class="border-right">I-</th>
+                        <th>o-</th>
+                        <th>S-</th>
+                        <th>R-</th>
+                        <th>I-</th>
+                    </tr>
+                </thead>
+                
+                <tbody>
+                <!-- 表格数据从 script 标签中获取 -->
                 </tbody>
             </table>
             <div class="text-justify">
                 <br>
-                It is worth noting that this leaderboard is dynamically maintained, mainly on two aspects. 
-                First, knowing that users tend to inquire LLMs for more recent news, we update SemSI-Set to add latest news and drop out-of-date news.
-                Second, we track the development of LLMs community and continually test emerging new models or updated models.                
+                It is worth noting that these benchmark results are dynamically maintained, mainly in two aspects. 
+                First, knowing that users tend to inquire LLMs for more recent news, we update <span class="code">SemSI-Set</span> to add the latest news and drop out-of-date news.
+                Second, we track the development of the LLMs community and continually test emerging new models or updated models.                
             </div>
         </div>
     </div>
+    
+    <!-- Section 4: Findings -->
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <h3 id="findings">
-                Findings
+                <span class="section-number">4.</span>Findings
             </h3>
             <div>
                 <div class="panel-group" id="accordion">
+                    <!-- Finding 1 -->
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h4 class="panel-title">
+                            <h4 class="panel-title bold-text">
                                 <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
-                                    1. SemSI highly exists in LLMs outputs.</a>
-                                <button class="btn btn-primary btn-sm pull-right triangle-btn" data-toggle="collapse"
-                                        data-parent="#accordion" href="#collapse1">
-                                    <span class="arrow-down"></span>
-                                </button>
+                                    1. SemSI highly exists in LLMs outputs.
+                                </a>
                             </h4>
                         </div>
                         <div id="collapse1" class="panel-collapse collapse">
                             <div class="panel-body" style="font-size: 16px;">
-                                A surprising amount of SemSI exists in LLMs. 
-                                Even if LLMs developers claim to have done safety alignment, 
-                                around one out of two outputs contain SemSI. This reveals that SemSI is a serious but under-appreciated problem.
+                                A surprising amount of <span class="code">SemSI</span> exists in LLMs. Even if most LLMs have undergone safety alignment, around one out of two outputs contain <span class="code">SemSI</span>. This reveals that <span class="code">SemSI</span> is a serious but under-appreciated problem.
                             </div>
                         </div>
                     </div>
+                    <!-- Finding 2 -->
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h4 class="panel-title">
+                            <h4 class="panel-title bold-text">
                                 <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
-                                    2. SemSI exists more in pretrained model than chat model.</a>
-                                <button class="btn btn-primary btn-sm pull-right triangle-btn" data-toggle="collapse"
-                                        data-parent="#accordion" href="#collapse2">
-                                    <span class="arrow-down"></span>
-                                </button>
+                                    2. SemSI exists more in completion models than in chat models.
+                                </a>
                             </h4>
                         </div>
                         <div id="collapse2" class="panel-collapse collapse">
                             <div class="panel-body" style="font-size: 16px;">
-                                We cannot deny that fine-tuning mitigates SemSI risk. 
-                                We evaluated pretrained and chat models pair for gpt-3.5, llama3, llama2, and glm4. 
-                                Chat models reduce up to 20% SemSI generation than pretrained models.
+                                Fine-tuning for chat or instruction-following tasks can mitigate <span class="code">SemSI</span> risk. We evaluate completion and chat model pairs for GPT-3.5, Llama, Llama2, and GLM. Chat models reduce up to 20% of <span class="code">SemSI</span> generation.
                             </div>
                         </div>
                     </div>
+                    <!-- Finding 3 -->
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h4 class="panel-title">
+                            <h4 class="panel-title bold-text">
                                 <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
-                                    3. LLMs safety is not positively correlated with their capability.</a>
-                                <button class="btn btn-primary btn-sm pull-right triangle-btn" data-toggle="collapse"
-                                        data-parent="#accordion" href="#collapse3">
-                                    <span class="arrow-down"></span>
-                                </button>
+                                    3. LLMs safety is not definitively positively correlated with their capability.
+                                </a>
                             </h4>
                         </div>
                         <div id="collapse3" class="panel-collapse collapse">
                             <div class="panel-body" style="font-size: 16px;">
-                                It is counter-intuitive to observe that stronger model is not necessarily safer. 
-                                For instance, in claude3 family, opus (resp. sonnet) is more powerful than sonnet (resp. haiku). 
-                                But opus (resp. sonnet) generates more SemSI than sonnet (resp. haiku). 
-                                This suggests that LLM developers cannot just go for high performance.
+                                It is counter-intuitive to observe that a stronger model is not definitively safer. For instance, in the Claude family, Opus (more powerful) generates more <span class="code">SemSI</span> than Sonnet, and similarly, Sonnet generates more than Haiku.
                             </div>
-                            <!-- <center>
-                                <img src="./third_party\images\repetition.png" class="img-responsive"
-                                     alt="overview" width="45%" style="margin:auto;padding-top: 1em">
-                                <p class="text-center">The MR@4/MR@1 values to demonstrate the effects of repetition of
-                                    misinformation
-                                </p>
-                            </center> -->
                         </div>
                     </div>
+                    <!-- Finding 4 -->
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h4 class="panel-title">
+                            <h4 class="panel-title bold-text">
                                 <a data-toggle="collapse" data-parent="#accordion" href="#collapse4">
-                                    4. OR and TS are correlated, but CR is not.</a>
-                                <button class="btn btn-primary btn-sm pull-right triangle-btn" data-toggle="collapse"
-                                        data-parent="#accordion" href="#collapse4">
-                                    <span class="arrow-down"></span>
-                                </button>
+                                    4. Occurrence rate and toxicity score are correlated, but coverage is not.
+                                </a>
                             </h4>
                         </div>
                         <div id="collapse4" class="panel-collapse collapse">
                             <div class="panel-body" style="font-size: 16px;">
-                                As metrics to evaluate SemSI, OR and TS are correlated. 
-                                This means a model that is more likely to generate SemSI will generate more toxic SemSI. 
-                                Nevertheless, CR is an independent metric that provides another way to quantify SemSI: even if OR is low, 
-                                CR can be raised up by certain samples full of SemSI, 
-                                which also needs to be taken into account because LLMs safety risk is often brought by a small number of bad cases.
+                                This means a model that is more likely to generate <span class="code">SemSI</span> will generate more toxic <span class="code">SemSI</span>. Nevertheless, coverage is an independent metric that provides another way to quantify <span class="code">SemSI</span>: even if the occurrence rate is low, coverage can be raised by certain samples full of <span class="code">SemSI</span>, which also needs to be taken into account because LLMs' safety risk is often brought by a small number of bad cases.
                             </div>
                         </div>
                     </div>
+                    <!-- Finding 5 -->
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h4 class="panel-title">
+                            <h4 class="panel-title bold-text">
                                 <a data-toggle="collapse" data-parent="#accordion" href="#collapse5">
-                                    5. p,r-SemSI are correlated, but m-SemSI is not.</a>
-                                <button class="btn btn-primary btn-sm pull-right triangle-btn" data-toggle="collapse"
-                                        data-parent="#accordion" href="#collapse5">
-                                    <span class="arrow-down"></span>
-                                </button>
+                                    5. <span class="code"><b>S, R-</b>SemSI</span> are correlated, but <span class="code"><b>I-</b>SemSI</span> is not.
+                                </a>
                             </h4>
                         </div>
                         <div id="collapse5" class="panel-collapse collapse">
                             <div class="panel-body" style="font-size: 16px;">
-                                We observe that models generate more p-SemSI also generate more r-SemSI. 
-                                This is supported by plenty of legal cases involving both privacy law and insult law.
-                                 As for m-SemSI, it is another concept related to defamation law. It often exists in out-of-date LLMs.
+                                We observe that models generating more <span class="code"><b>S-</b>SemSI</span> also generate more <span class="code"><B>R-</B>SemSI</span>. This is supported by plenty of legal cases involving both privacy law and insult law. As for <span class="code"><b>I-</b>SemSI</span>, it is another concept related to defamation law. It often exists in LLMs released before the timestamp of the hot news mentioned in the prompt.
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <br>
-        </div>
-    </div>
-
-    <!-- <div class="row">
-        <div class="col-md-10 col-md-offset-1">
-            <h3 id="dataset">
-                Farm Dataset
-            </h3>
-            <div class="text-justify">
-                The dataset...
-                <center>
-                    <img src="./third_party\images\dataset_sample.png" class="img-responsive"
-                         alt="overview" width="100%" style="margin:auto;padding-top: 1em">
-                    <p class="text-center">Sample from the dataset</p>
-                </center>
+                <br>
             </div>
         </div>
     </div>
+</div>
 
 
-    <div class="row">
-        <div class="col-md-10 col-md-offset-1">
-            <h3 id="examples">
-                Examples
-            </h3>
-            <div class="text-justify">
-                We present some...
-            </div>
-            <br/>
+<script>
+    let timeoutId;
 
-            <div id="outputAndControlsContainer">
-                <div id="controlsContainer">
-                    <div id="exampleSelectorContainer">
-                        <label for="exampleSelector">Select an Example:</label>
-                        <select id="passageTypeSelector"
-                                onchange="handleChange('passageTypeSelector', 'exampleSelector', 'model1Output', texts)">
-                            <option value="" disabled selected>Select a persuasion strategy</option>
-                            <option value="0">Type 1 -- Repetition</option>
-                            <option value="1">Type 2 -- Logical</option>
-                            <option value="2">Type 3 -- Credibility</option>
-                            <option value="3">Type 4 -- Emotional</option>
-                        </select>
-                        <select id="exampleSelector"
-                                onchange="handleChange('passageTypeSelector', 'exampleSelector', 'model1Output', texts)">
-                            <option value="" disabled selected>Select an LLM</option>
-                            <option value="0">Example 1 -- ChatGPT</option>
-                            <option value="1">Example 2 -- GPT-4</option>
-                        </select>
-                    </div>
-                </div>
+    function typeWriterEffect(element, inputText) {
+        clearTimeout(timeoutId); // Clear the previous timeout
 
-                <div id="outputContainer">
-                    <div id="chatbot1" class="chatbotOutput">
-                        <div class="chatbotHeader">
-                            <!-- <img src="./LLMFinetuneRisk_files/images/ChatGPT_logo.png" alt="ChatGPT Icon"> -->
-                            <!-- <span style="font-weight: bold; font-size: larger;">Persuasive Conversation</span>
-                        </div>
-                        <div id="model1Output" class="output-container"></div>
-                    </div>
-                </div>
-            </div>
-            <br/>
-        </div>
+        const text = inputText;
+        const typewriter = document.getElementById(element);
+        let index = 0;
+        typewriter.innerHTML = "";
 
-        <div class="row">
-            <div class="col-md-10 col-md-offset-1">
-
-                <h3 id="ethics">Ethics and Disclosure</h3>
-                <div class="text-justify">
-                    <ul>
-                        <li>
-                            <p>
-                                In this study, ...
-
-                            </p>
-                            <p>
-                                <b>Inappropriately applying ...</b>
-                                It ...
-                            </p>
-                            <p>
-                                <b>Additi...</b>
-                                Therefo...
-                            </p>
-                            <p>
-                                We r...
-                            </p>
-                        </li>
-                    </ul>
-
-                    <br><br>
-                </div>
-            </div>
-        </div> -->
-
-
-        <!--      <footer class="footer" style="background-color: white;">-->
-        <!--        <div class="container">-->
-        <!--          <p class="text-muted">-->
-        <!--            Acknowledgements: The website template was borrowed from-->
-        <!--            <a href="https://llm-tuning-safety.github.io/index.html" target="_blank">LLM-Tuning-Safety</a>,-->
-        <!--            <a href="https://climatenerf.github.io/" target="_blank">ClimateNeRF</a>,-->
-        <!--            <a href="http://mgharbi.com/" target="_blank">Michaël Gharbi</a>,-->
-        <!--            <a href="https://dorverbin.github.io/refnerf/index.html" target="_blank">RefNeRF</a>,-->
-        <!--            <a href="https://nerfies.github.io/" target="_blank">Nerfies</a>-->
-        <!--            and <a href="https://hhsinping.github.io/svs/supp/visual_comparison.html" target="_blank">Semantic View-->
-        <!--              Synthesis</a>.-->
-        <!--          </p>-->
-        <!--        </div>-->
-        <!--      </footer>-->
-
-    </div> -->
-
-    <script>
-        let timeoutId;
-
-        function typeWriterEffect(element, inputText) {
-            clearTimeout(timeoutId); // Clear the previous timeout
-
-            const text = inputText;
-            const typewriter = document.getElementById(element);
-            let index = 0;
-            typewriter.innerHTML = "";
-
-            function type() {
-                if (index < text.length) {
-                    typewriter.innerHTML = text.slice(0, index);
-                    index++;
-                    timeoutId = setTimeout(type, 0.08);
-                } else {
-                    typewriter.innerHTML = text.slice(0, index);
-                }
+        function type() {
+            if (index < text.length) {
+                typewriter.innerHTML = text.slice(0, index);
+                index++;
+                timeoutId = setTimeout(type, 0.08);
+            } else {
+                typewriter.innerHTML = text.slice(0, index);
             }
-
-            type(); // Start typing
         }
 
+        type(); // Start typing
+    }
 
-        function handleChange(typeSelector, exampleSelector, outputElement, texts) {
-            var typeSelectorElement = document.getElementById(typeSelector);
-            var type = typeSelectorElement.value;
-            var exampleSelectorElement = document.getElementById(exampleSelector);
-            var example = exampleSelectorElement.value;
-            var typewriterElement = document.getElementById(outputElement);
 
-            typeWriterEffect(outputElement, texts[type][example]);
-        }
+    function handleChange(typeSelector, exampleSelector, outputElement, texts) {
+        var typeSelectorElement = document.getElementById(typeSelector);
+        var type = typeSelectorElement.value;
+        var exampleSelectorElement = document.getElementById(exampleSelector);
+        var example = exampleSelectorElement.value;
+        var typewriterElement = document.getElementById(outputElement);
 
-        $(document).ready(function () {
-            var table = $('#leaderboard_content').DataTable({
-                data: [
-                    ["GPT-4o", 42.09, 1.30, 15.23, 30.92, 28.60, 6.14, 0.59, 0.57, 0.13, 17.87, 6.51, 1.26],
-                    ["GPT-4", 46.18, 1.43, 20.66, 31.49, 29.68, 11.97, 0.60, 0.57, 0.26, 22.41, 8.60, 3.09],
-                    ["GPT-3.5-Turbo", 45.30, 1.50, 24.26, 27.10, 27.10, 17.90, 0.53, 0.56, 0.42, 20.93, 9.60, 5.26],
-                    ["GPT-3.5-Turbo-Instruct", 62.78, 2.37, 29.85, 42.19, 37.63, 32.35, 0.82, 0.78, 0.76, 28.10, 12.03, 8.24],
-                    ["Claude3 Opus", 43.16, 1.33, 16.65, 30.38, 30.38, 7.14, 0.58, 0.59, 0.15, 18.25, 8.91, 1.81],
-                    ["Claude3 Sonnet", 30.45, 0.82, 10.83, 18.49, 19.90, 3.82, 0.34, 0.39, 0.08, 11.50, 5.32, 0.59],
-                    ["Claude3 Haiku", 25.08, 0.69, 9.52, 13.84, 17.85, 3.51, 0.26, 0.35, 0.08, 8.31, 5.11, 0.65],
-                    ["Gemini 1.5 Pro", 37.94, 1.06, 9.75, 23.92, 27.84, 4.23, 0.45, 0.53, 0.09, 13.92, 6.66, 0.70],
-                    ["Gemini 1.5 Flash", 42.01, 1.27, 10.93, 25.93, 27.80, 11.83, 0.50, 0.52, 0.25, 15.30, 6.82, 2.74],
-                    ["Gemini 1.0 Pro", 39.30, 1.11, 23.71, 12.82, 17.27, 24.79, 0.25, 0.34, 0.52, 8.93, 7.43, 14.82],
-                    ["Llama3-8B-Instruct", 52.09, 1.68, 16.98, 30.42, 26.55, 25.64, 0.57, 0.53, 0.57, 18.67, 7.37, 6.13],
-                    ["Llama3-8B", 72.40, 3.81, 42.00, 47.32, 52.17, 62.49, 1.07, 1.19, 1.56, 45.89, 43.93, 50.09],
-                    ["Llama2-7B-Chat", 59.06, 1.92, 15.95, 32.24, 27.43, 33.37, 0.61, 0.54, 0.77, 18.58, 7.60, 6.06],
-                    ["Llama2-7B", 83.90, 4.18, 17.44, 51.39, 55.42, 69.20, 1.18, 1.27, 1.72, 41.75, 22.37, 19.94],
-                    ["GLM4-9B-CHAT", 66.67, 2.51, 17.70, 40.27, 36.59, 41.22, 0.78, 0.76, 0.98, 20.63, 6.99, 7.67],
-                    ["GLM4-9B", 68.44, 3.07, 18.86, 35.71, 39.55, 57.14, 0.77, 0.88, 1.42, 24.65, 18.78, 20.89],
-                    ["GPT-J-6B", 35.11, 0.99, 5.00, 9.21, 5.94, 30.19, 0.16, 0.13, 0.70, 5.99, 1.82, 4.50],
-                    ["Gemma-7B-Instruct", 26.81, 0.66, 17.64, 2.12, 8.87, 21.57, 0.04, 0.17, 0.45, 2.00, 5.16, 16.59],
-                    ["MiniCPM-Llama3-V", 63.39, 2.44, 32.04, 33.03, 33.54, 45.60, 0.67, 0.69, 1.08, 26.00, 11.58, 15.40],
-                    ["Phi-3-Mini-4K-Instruct", 39.59, 1.22, 10.03, 21.02, 14.90, 24.08, 0.38, 0.29, 0.55, 12.11, 3.89, 4.93],
-                    ["Qwen2-7B-Instruct", 46.76, 1.64, 13.91, 27.60, 23.38, 28.22, 0.52, 0.46, 0.65, 17.07, 5.13, 5.64],
-                    ["Mistral-7B-Instruct-v0.3", 56.21, 1.91, 21.35, 34.93, 30.35, 27.60, 0.68, 0.60, 0.63, 21.10, 8.15, 6.29]
-                ],
-                columns: [
-                    {title: "Model", data: "0"},
-                    {title: "o-OR(%)", data: "1"},
-                    {title: "o-TS", data: "2"},
-                    {title: "o-CR(%)", data: "3"},
-                    {title: "p-OR(%)", data: "4"},
-                    {title: "r-OR(%)", data: "5"},
-                    {title: "m-OR(%)", data: "6"},
-                    {title: "p-TS", data: "7"},
-                    {title: "r-TS", data: "8"},
-                    {title: "m-TS", data: "9"},
-                    {title: "p-CR(%)", data: "10"},
-                    {title: "r-CR(%)", data: "11"},
-                    {title: "m-CR(%)", data: "12"}
-                ],
-                order: [[0, 'asc']], // 默认按照Model列升序排列
-                lengthChange: false,
-                searching: false,
-                info: false,
-                paging: false
-            });
+        typeWriterEffect(outputElement, texts[type][example]);
+    }
+
+    $(document).ready(function () {
+        var table = $('#open_source_table').DataTable({
+            data: [
+                ['GPT-3.5-Turbo-Instruct', 62.8, 42.1, 37.6, 32.3, 2.3, 0.8, 0.8, 0.7, 29.8, 28.1, 12.0, 8.2],
+                ['GPT-4', 46.1, 31.4, 29.6, 11.9, 1.4, 0.6, 0.5, 0.2, 20.6, 22.4, 8.6, 3.1],
+                ['GPT-3.5-Turbo', 45.3, 27.1, 27.1, 17.9, 1.5, 0.5, 0.6, 0.4, 24.2, 20.9, 9.6, 5.2],
+                ['Claude3 Opus', 43.1, 30.3, 30.4, 7.1, 1.3, 0.5, 0.6, 0.2, 16.6, 18.2, 8.9, 1.8],
+                ['GPT-4o', 42.1, 30.9, 28.6, 6.1, 1.3, 0.6, 0.6, 0.1, 15.2, 17.9, 6.5, 1.3],
+                ['Gemini 1.5 Flash', 42.1, 25.9, 27.8, 11.8, 1.2, 0.5, 0.5, 0.2, 10.9, 15.3, 6.8, 2.7],
+                ['GPT-o1-preview', 39.9, 26.6, 29.6, 2.6, 1.2, 0.5, 0.6, 0.1, 9.44, 11.9, 5.9, 0.7],
+                ['Gemini 1.0 Pro', 39.3, 12.8, 17.2, 24.7, 1.1, 0.2, 0.3, 0.5, 23.7, 8.9, 7.4, 14.8],
+                ['Gemini 1.5 Pro', 37.9, 23.9, 27.8, 4.2, 1.1, 0.5, 0.5, 0.1, 9.7, 13.9, 6.7, 0.7],
+                ['GPT-o1-mini', 36.9, 16.9, 23.4, 16.3, 1.1, 0.3, 0.5, 0.3, 5.2, 8.7, 4.8, 6.5],
+                ['Claude3 Sonnet', 30.5, 18.5, 19.9, 3.8, 0.8, 0.3, 0.3, 0.1, 10.8, 11.5, 5.3, 0.5],
+                ['Claude 3 Haiku', 25.1, 13.8, 17.8, 3.5, 0.7, 0.2, 0.4, 0.1, 9.5, 8.3, 5.1, 0.6],
+            ],
+            columns: [
+                {title: "Open Source Model", data: "0"},
+                {title: "o-", data: "1"},
+                {title: "S-", data: "2"},
+                {title: "R-", data: "3"},
+                {title: "I-", data: "4"},
+                {title: "o-", data: "5"},
+                {title: "S-", data: "6"},
+                {title: "R-", data: "7"},
+                {title: "I-", data: "8"},
+                {title: "o-", data: "9"},
+                {title: "S-", data: "10"},
+                {title: "R-", data: "11"},
+                {title: "I-", data: "12"}
+            ],
+            
+            order: [[1, 'desc']],
+            lengthChange: false,
+            searching: false,
+            info: false,
+            paging: false,
+            //包括表头也居中
+            "columnDefs": [
+            {"className": "dt-center", "targets": "_all"},  // 让所有列居中
+            {"className": "border-right", "targets": [0, 4, 8]} // 添加边框的列索引
+
+        ]
         });
-    </script>
-    <script type="text/javascript" charset="utf8"
-            src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
+    });
+    $(document).ready(function () {
+        var table = $('#closed_source_table').DataTable({
+            data: [
+                ['Llama2-7B', 83.9, 51.3, 55.4, 69.2, 4.1, 1.2, 1.3, 1.7, 17.4, 41.8, 22.4, 19.9],
+                ['Llama3-8B', 72.4, 47.3, 52.1, 62.4, 3.8, 1.1, 1.2, 1.6, 42.0, 45.9, 43.9, 50.1],
+                ['GLM4-9B', 68.4, 35.7, 39.5, 57.1, 3.0, 0.7, 0.8, 1.4, 18.8, 24.6, 18.7, 20.9],
+                ['GLM4-9B-CHAT', 66.7, 40.2, 36.5, 41.2, 2.5, 0.8, 0.7, 0.9, 17.7, 20.6, 6.9, 7.6],
+                ['MiniCPM-Llama3-V', 63.3, 33.0, 33.5, 45.6, 2.4, 0.6, 0.6, 1.0, 32.0, 26.0, 11.5, 15.4],
+                ['Llama2-7B-Chat', 59.1, 32.2, 27.4, 33.3, 1.9, 0.6, 0.5, 0.7, 15.9, 18.5, 7.6, 6.1],
+                ['Mistral-7B-Instruct-v0.3', 56.2, 34.9, 30.3, 27.6, 1.9, 0.6, 0.6, 0.6, 21.3, 21.1, 8.1, 6.2],
+                ['Llama3-8B-Instruct', 52.0, 30.4, 26.5, 25.6, 1.6, 0.5, 0.5, 0.5, 16.9, 18.7, 7.3, 6.1],
+                ['Qwen2-7B-Instruct', 46.7, 27.6, 23.3, 28.2, 1.6, 0.5, 0.4, 0.6, 13.9, 17.1, 5.1, 5.6],
+                ['Llama3.1-8B-Instruct', 46.0, 18.3, 33.0, 22.4, 1.6, 0.4, 0.7, 0.5, 20.0, 11.0, 14.5, 9.0],
+                ['Phi-3-Mini-4K-Instruct', 39.5, 21.0, 14.9, 24.1, 1.2, 0.4, 0.3, 0.6, 10.0, 12.1, 3.9, 4.9],
+                ['GPT-J-6B', 35.1, 9.2, 5.9, 30.1, 0.9, 0.1, 0.1, 0.7, 5.0, 5.9, 1.8, 4.5],
+                ['Gemma-7B-Instruct', 26.8, 2.1, 8.8, 21.5, 0.6, 0.1, 0.2, 0.4, 17.6, 2.0, 5.1, 16.5],
+            ],
+            columns: [
+                {title: "API Model", data: "0"},
+                {title: "o-", data: "1"},
+                {title: "S-", data: "2"},
+                {title: "R-", data: "3"},
+                {title: "I-", data: "4"},
+                {title: "o-", data: "5"},
+                {title: "S-", data: "6"},
+                {title: "R-", data: "7"},
+                {title: "I-", data: "8"},
+                {title: "o-", data: "9"},
+                {title: "S-", data: "10"},
+                {title: "R-", data: "11"},
+                {title: "I-", data: "12"}
+            ],
+            
+            order: [[1, 'desc']],
+            lengthChange: false,
+            searching: false,
+            info: false,
+            paging: false, 
+            "columnDefs": [
+            {"className": "dt-center", "targets": "_all"},  // 让所有列居中
+            {"className": "border-right", "targets": [0, 4, 8]} // 添加边框的列索引
+        ]
+        });
+    });
+</script>
+<script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
 </div>
 </body>
 </html>
